@@ -1,8 +1,6 @@
-type Task = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
+import type { Task } from "@/types/task";
+
+
 type TaskListProps = {
   tasks: Task[];
   onDeleteTask: (id: number) => void;
@@ -14,11 +12,15 @@ export default function TaskList({
   onDeleteTask,
   onToggleTask,
 }: TaskListProps) {    return (
+
+
+
+
       <div className="mt-8">
-        {tasks.map((task, index) => (
- <div
- key={task.id}
- className="flex items-center justify-between border p-3 rounded-lg mb-2"
+        {tasks.map((task) => (
+          <div
+  key={task.id}
+  className="flex justify-between items-center border rounded-lg p-4 mb-3 shadow-sm hover:shadow-md transition-all bg-white"
 >
  <div className="flex items-center gap-3">
 

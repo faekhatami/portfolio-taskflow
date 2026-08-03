@@ -6,17 +6,13 @@ import Hero from "@/components/Hero";
 import Button from "@/components/Button";
 import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
-
-type Task = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
+import type { Task } from "@/types/task";
 
 export default function Home() {
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
+  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
   const handleAddTask = (newTask: string) => {
     const task = {
@@ -54,17 +50,51 @@ export default function Home() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  const totalTasks = tasks.length;
+
+  const completedTasks = tasks.filter(
+    (task) => task.completed
+  ).length;
+  
+  const remainingTasks = totalTasks - completedTasks;
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "active") return !task.completed;
+  
+    if (filter === "completed") return task.completed;
+  
+    return true;
+  });
 
   return (
-    <main>
-      <Navbar />
+<main className="max-w-2xl mx-auto p-6">      <Navbar />
 
       <Hero />
 
       <TaskInput onAddTask={handleAddTask} />
       
-      <TaskList
-  tasks={tasks}
+      <div className="flex justify-between mb-4 font-semibold">
+  <p>Tasks: {totalTasks}</p>
+  <p>Completed: {completedTasks}</p>
+  <p>Remaining: {remainingTasks}</p>
+</div>
+
+<div className="flex gap-3 mb-4">
+  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("all")}>
+    All
+  </button>
+
+  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("active")}>
+    Active
+  </button>
+
+  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("completed")}>
+    Completed
+  </button>
+</div>
+
+<TaskList
+  tasks={filteredTasks}
   onDeleteTask={handleDeleteTask}
   onToggleTask={handleToggleTask}
 />
