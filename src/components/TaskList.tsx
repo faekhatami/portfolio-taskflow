@@ -30,15 +30,27 @@ export default function TaskList({
      onChange={() => onToggleTask(task.id)}
    />
 
-   <p
-     className={
-       task.completed
-         ? "line-through text-gray-400"
-         : ""
-     }
-   >
-     {task.title}
-   </p>
+<div>
+  <p
+    className={
+      task.completed
+        ? "line-through text-gray-400"
+        : ""
+    }
+  >
+    {task.title}
+  </p>
+
+  <span
+    className={
+      task.completed
+        ? "text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full"
+        : "text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full"
+    }
+  >
+    {task.completed ? "Completed" : "Active"}
+  </span>
+</div>
 
  </div>
 
