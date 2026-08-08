@@ -35,6 +35,16 @@ export default function Home() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const handleEditTask = (id: number, newTitle: string) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, title: newTitle }
+          : task
+      )
+    );
+  };
+
   const handleToggleTask = (id: number) => {
     setTasks(
       tasks.map((task) =>
@@ -142,6 +152,7 @@ export default function Home() {
   tasks={sortedTasks}
   onDeleteTask={handleDeleteTask}
   onToggleTask={handleToggleTask}
+  onEditTask={handleEditTask}
 />
       <div className="flex justify-center mt-8">
         <Button text="Get Started" />
