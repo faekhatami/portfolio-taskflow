@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Button from "@/components/Button";
@@ -11,62 +11,24 @@ import { useTasks } from "@/hooks/useTasks";
 
 export default function Home() {
 
-  const [tasks, setTasks] = useState<Task[]>([]);
-
+  
   const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
   const [search, setSearch] = useState("");
 
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
-  const { message } = useTasks();
+  const {
+    tasks,
+    addTask,
+    deleteTask,
+    toggleTask,
+    editTask,
+  } = useTasks();
 
-  const handleAddTask = (newTask: string) => {
-    const task = {
-      id: Date.now(),
-      title: newTask,
-      completed: false,
-    };
-  
-    setTasks([...tasks, task]);
-  };
 
-  const handleDeleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
 
-  const handleEditTask = (id: number, newTitle: string) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id
-          ? { ...task, title: newTitle }
-          : task
-      )
-    );
-  };
-
-  const handleToggleTask = (id: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed }
-          : task
-      )
-    );
-  };
-
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-  
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
+ 
   const totalTasks = tasks.length;
 
   const completedTasks = tasks.filter(
@@ -104,11 +66,16 @@ export default function Home() {
       <Hero />
 
       <p className="text-center text-gray-500">
-  {message}
 </p>
 
-      <TaskInput onAddTask={handleAddTask} />
-      
+<TaskInput onAddTask={addTask} />
+
+<TaskList
+  tasks={filteredTasks}
+  onDeleteTask={deleteTask}
+  onToggleTask={toggleTask}
+  onEditTask={editTask}
+/>
       <div className="flex justify-between mb-4 font-semibold">
   <p>Tasks: {totalTasks}</p>
   <p>Completed: {completedTasks}</p>
@@ -148,12 +115,7 @@ export default function Home() {
   </button>
 </div>
 
-<TaskList
-  tasks={sortedTasks}
-  onDeleteTask={handleDeleteTask}
-  onToggleTask={handleToggleTask}
-  onEditTask={handleEditTask}
-/>
+
       <div className="flex justify-center mt-8">
         <Button text="Get Started" />
       </div>
