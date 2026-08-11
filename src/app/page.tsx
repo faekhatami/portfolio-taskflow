@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -6,17 +7,17 @@ import Hero from "@/components/Hero";
 import Button from "@/components/Button";
 import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
-import type { Task } from "@/types/task";
 import { useTasks } from "@/hooks/useTasks";
 
 export default function Home() {
-
-  
-  const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
+  const [filter, setFilter] = useState<
+    "all" | "active" | "completed"
+  >("all");
 
   const [search, setSearch] = useState("");
 
-  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [sortOrder, setSortOrder] =
+    useState<"newest" | "oldest">("newest");
 
   const {
     tasks,
@@ -26,17 +27,7 @@ export default function Home() {
     editTask,
   } = useTasks();
 
-
-
- 
-  const totalTasks = tasks.length;
-
-  const completedTasks = tasks.filter(
-    (task) => task.completed
-  ).length;
-  
-  const remainingTasks = totalTasks - completedTasks;
-
+  // Filter + Search
   const filteredTasks = tasks.filter((task) => {
     const matchesFilter =
       filter === "all"
@@ -44,77 +35,103 @@ export default function Home() {
         : filter === "active"
         ? !task.completed
         : task.completed;
-  
+
     const matchesSearch = task.title
       .toLowerCase()
       .includes(search.toLowerCase());
-  
+
     return matchesFilter && matchesSearch;
   });
 
+  // Sort
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     if (sortOrder === "newest") {
       return b.id - a.id;
     }
-  
+
     return a.id - b.id;
   });
 
+  // Statistics
+  const totalTasks = tasks.length;
+
+  const completedTasks = tasks.filter(
+    (task) => task.completed
+  ).length;
+
+  const remainingTasks = totalTasks - completedTasks;
+
   return (
-<main className="max-w-2xl mx-auto p-6">      <Navbar />
+<main className="max-w-2xl mx-auto px-4 py-6 sm:px-6">      <Navbar />
 
       <Hero />
 
-      <p className="text-center text-gray-500">
-</p>
+      <TaskInput onAddTask={addTask} />
 
-<TaskInput onAddTask={addTask} />
-
-<TaskList
-  tasks={filteredTasks}
-  onDeleteTask={deleteTask}
-  onToggleTask={toggleTask}
-  onEditTask={editTask}
-/>
+      {/* Statistics */}
       <div className="flex justify-between mb-4 font-semibold">
-  <p>Tasks: {totalTasks}</p>
-  <p>Completed: {completedTasks}</p>
-  <p>Remaining: {remainingTasks}</p>
-</div>
+        <p>Tasks: {totalTasks}</p>
+        <p>Completed: {completedTasks}</p>
+        <p>Remaining: {remainingTasks}</p>
+      </div>
 
-<input
-  type="text"
-  placeholder="Search tasks..."
-  value={search}
-  onChange={(event) => setSearch(event.target.value)}
-  className="w-full border rounded-lg p-3 mb-4"
-/>
+      {/* Search / Filter / Sort */}
+      <div className="flex flex-col gap-4 mb-6">
+        {/* Search */}
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          value={search}
+          onChange={(event) =>
+            setSearch(event.target.value)
+          }
+          className="border rounded-lg px-4 py-2 w-full"
+        />
 
-<select
-  value={sortOrder}
-  onChange={(event) =>
-    setSortOrder(event.target.value as "newest" | "oldest")
-  }
-  className="border rounded-lg p-3 mb-4"
->
-  <option value="newest">Newest</option>
-  <option value="oldest">Oldest</option>
-</select>
+        {/* Filter */}
+        <div className="flex flex-wrap gap-2">          <button
+            onClick={() => setFilter("all")}
+            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
+          >
+            All
+          </button>
 
-<div className="flex gap-3 mb-4">
-  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("all")}>
-    All
-  </button>
+          <button
+            onClick={() => setFilter("active")}
+            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
+          >
+            Active
+          </button>
 
-  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("active")}>
-    Active
-  </button>
+          <button
+            onClick={() => setFilter("completed")}
+            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
+          >
+            Completed
+          </button>
+        </div>
 
-  <button className="border px-4 py-2 rounded hover:bg-gray-100 transition" onClick={() => setFilter("completed")}>
-    Completed
-  </button>
-</div>
+        {/* Sort */}
+        <select
+          value={sortOrder}
+          onChange={(event) =>
+            setSortOrder(
+              event.target.value as "newest" | "oldest"
+            )
+          }
+className="border rounded-lg px-4 py-2 w-full sm:w-auto"        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
 
+      {/* Task List */}
+      <TaskList
+        tasks={sortedTasks}
+        onDeleteTask={deleteTask}
+        onToggleTask={toggleTask}
+        onEditTask={editTask}
+      />
 
       <div className="flex justify-center mt-8">
         <Button text="Get Started" />

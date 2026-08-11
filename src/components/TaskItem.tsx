@@ -20,7 +20,7 @@ export default function TaskItem({
   const [editTitle, setEditTitle] = useState(task.title);
 
   return (
-    <div className="flex justify-between items-center border rounded-lg p-4 mb-3 shadow-sm hover:shadow-md transition-all bg-white">
+    <div className="flex items-center justify-between border rounded-xl p-4 mb-3 bg-white shadow-sm hover:shadow-md transition">
 
       <div className="flex items-center gap-3">
 
@@ -31,27 +31,26 @@ export default function TaskItem({
         />
 
         {isEditing ? (
-          <input
-            value={editTitle}
-            onChange={(event) => setEditTitle(event.target.value)}
-            className="border rounded px-2 py-1"
-          />
+  <input
+  value={editTitle}
+  onChange={(event) => setEditTitle(event.target.value)}
+  className="border border-gray-300 bg-white text-gray-900 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+/>
         ) : (
           <p
-            className={
-              task.completed
-                ? "line-through text-gray-400"
-                : ""
-            }
-          >
-            {task.title}
-          </p>
+          className={
+            task.completed
+              ? "line-through text-gray-400"
+              : "text-gray-900 font-medium"
+          }
+        >
+          {task.title}
+        </p>
         )}
 
       </div>
 
-      <div className="flex gap-2">
-
+      <div className="flex gap-3 ml-2">
         {isEditing ? (
           <>
             <button

@@ -1,35 +1,48 @@
+
 "use client";
 
 import { useState } from "react";
 
 type TaskInputProps = {
-    onAddTask: (task: string) => void;
-  };
+  onAddTask: (task: string) => void;
+};
 
-export default function TaskInput({ onAddTask }: TaskInputProps) {
+export default function TaskInput({
+  onAddTask,
+}: TaskInputProps) {
   const [task, setTask] = useState("");
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!task.trim()) return;
+
+    onAddTask(task.trim());
+    setTask("");
+  };
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-8">
-      <input
-        className="border p-3 rounded-lg"
-        placeholder="Add a new task"
-        value={task}
-        onChange={(event) => setTask(event.target.value)}
-      />
+    <form
+      onSubmit={handleSubmit}
+      className="mb-8"
+    >
+<div className="flex flex-col sm:flex-row gap-3">        <input
+          type="text"
+          placeholder="What do you need to do?"
+          value={task}
+          onChange={(event) =>
+            setTask(event.target.value)
+          }
+          className="flex-1 bg-gray-800 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+        />
 
-      <p>{task}</p>
-
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-  onClick={() => {
-    onAddTask(task);
-    setTask("");
-  }}
->
-  Add Task
-</button>
-    </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white font-medium px-5 py-3 rounded-xl hover:bg-blue-700 active:scale-95 transition w-full sm:w-auto"        >
+          Add Task
+        </button>
+      </div>
+    </form>
   );
 }
+
