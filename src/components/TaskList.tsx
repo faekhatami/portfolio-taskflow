@@ -7,6 +7,7 @@ type TaskListProps = {
   onDeleteTask: (id: number) => void;
   onToggleTask: (id: number) => void;
   onEditTask: (id: number, newTitle: string) => void;
+  hasSearch: boolean;
 };
 
 export default function TaskList({
@@ -14,16 +15,21 @@ export default function TaskList({
   onDeleteTask,
   onToggleTask,
   onEditTask,
+  hasSearch,
 }: TaskListProps) {
   if (tasks.length === 0) {
     return (
       <div className="text-center py-12 text-gray-400">
         <p className="text-lg font-medium">
-          No tasks found
+          {hasSearch
+            ? "No tasks found"
+            : "No tasks yet"}
         </p>
-
+  
         <p className="text-sm mt-2">
-          Add a task to get started.
+          {hasSearch
+            ? "Try a different search."
+            : "Add your first task to get started."}
         </p>
       </div>
     );

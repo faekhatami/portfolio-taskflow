@@ -90,25 +90,37 @@ export default function Home() {
 
         {/* Filter */}
         <div className="flex flex-wrap gap-2">          <button
-            onClick={() => setFilter("all")}
-            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
-          >
-            All
-          </button>
+  onClick={() => setFilter("all")}
+  className={`px-4 py-2 rounded transition ${
+    filter === "all"
+      ? "bg-blue-600 text-white"
+      : "border hover:bg-gray-100"
+  }`}
+>
+  All
+</button>
 
-          <button
-            onClick={() => setFilter("active")}
-            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
-          >
-            Active
-          </button>
+<button
+  onClick={() => setFilter("active")}
+  className={`px-4 py-2 rounded transition ${
+    filter === "active"
+      ? "bg-blue-600 text-white"
+      : "border hover:bg-gray-100"
+  }`}
+>
+  Active
+</button>
 
-          <button
-            onClick={() => setFilter("completed")}
-            className="border px-4 py-2 rounded hover:bg-gray-100 transition"
-          >
-            Completed
-          </button>
+<button
+  onClick={() => setFilter("completed")}
+  className={`px-4 py-2 rounded transition ${
+    filter === "completed"
+      ? "bg-blue-600 text-white"
+      : "border hover:bg-gray-100"
+  }`}
+>
+  Completed
+</button>
         </div>
 
         {/* Sort */}
@@ -127,11 +139,12 @@ className="border rounded-lg px-4 py-2 w-full sm:w-auto"        >
 
       {/* Task List */}
       <TaskList
-        tasks={sortedTasks}
-        onDeleteTask={deleteTask}
-        onToggleTask={toggleTask}
-        onEditTask={editTask}
-      />
+  tasks={sortedTasks}
+  onDeleteTask={deleteTask}
+  onToggleTask={toggleTask}
+  onEditTask={editTask}
+  hasSearch={search.trim().length > 0}
+/>
 
       <div className="flex justify-center mt-8">
         <Button text="Get Started" />

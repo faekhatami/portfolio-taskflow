@@ -60,8 +60,7 @@ export default function TaskItem({
                   setIsEditing(false);
                 }
               }}
-              className="bg-green-500 text-white px-3 py-1 rounded"
-            >
+              className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition"            >
               Save
             </button>
 
@@ -70,26 +69,33 @@ export default function TaskItem({
                 setEditTitle(task.title);
                 setIsEditing(false);
               }}
-              className="bg-gray-400 text-white px-3 py-1 rounded"
-            >
+              className="bg-gray-400 text-white px-3 py-2 rounded-lg hover:bg-gray-500 transition"            >
               Cancel
             </button>
           </>
         ) : (
           <>
-            <button
-              onClick={() => setIsEditing(true)}
-              className="bg-blue-500 text-white px-3 py-1 rounded"
-            >
-              Edit
-            </button>
+           <button
+  onClick={() => setIsEditing(true)}
+  className="bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition"
+>
+  Edit
+</button>
 
             <button
-              onClick={() => onDeleteTask(task.id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              Delete
-            </button>
+  onClick={() => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
+
+    if (confirmed) {
+      onDeleteTask(task.id);
+    }
+  }}
+  className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition"
+>
+  Delete
+</button>
           </>
         )}
 
