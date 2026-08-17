@@ -8,6 +8,8 @@ import Button from "@/components/Button";
 import TaskInput from "@/components/TaskInput";
 import TaskList from "@/components/TaskList";
 import { useTasks } from "@/hooks/useTasks";
+import { useTaskStats } from "@/hooks/useTaskStats";
+import { useTaskFilters } from "@/hooks/useTaskFilters";
 
 export default function Home() {
   const [filter, setFilter] = useState<
@@ -19,47 +21,28 @@ export default function Home() {
   const [sortOrder, setSortOrder] =
     useState<"newest" | "oldest">("newest");
 
-  const {
-    tasks,
-    addTask,
-    deleteTask,
-    toggleTask,
-    editTask,
-  } = useTasks();
+    const {
+      tasks,
+      addTask,
+      deleteTask,
+      toggleTask,
+      editTask,
+    } = useTasks();
+    
+    const {
+      totalTasks,
+      completedTasks,
+      remainingTasks,
+    } = useTaskStats(tasks);
+    
+    const sortedTasks = useTaskFilters(
+      tasks,
+      filter,
+      search,
+      sortOrder
+    );
 
-  // Filter + Search
-  const filteredTasks = tasks.filter((task) => {
-    const matchesFilter =
-      filter === "all"
-        ? true
-        : filter === "active"
-        ? !task.completed
-        : task.completed;
-
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    return matchesFilter && matchesSearch;
-  });
-
-  // Sort
-  const sortedTasks = [...filteredTasks].sort((a, b) => {
-    if (sortOrder === "newest") {
-      return b.id - a.id;
-    }
-
-    return a.id - b.id;
-  });
-
-  // Statistics
-  const totalTasks = tasks.length;
-
-  const completedTasks = tasks.filter(
-    (task) => task.completed
-  ).length;
-
-  const remainingTasks = totalTasks - completedTasks;
+ 
 
   return (
 <main className="max-w-2xl mx-auto px-4 py-6 sm:px-6">      <Navbar />
