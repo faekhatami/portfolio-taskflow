@@ -114,7 +114,7 @@ export default function Home() {
               event.target.value as "newest" | "oldest"
             )
           }
-className="border rounded-lg px-4 py-2 w-full sm:w-auto"        >
+className="border rounded-lg px-4 py-2 w-full sm:w-auto bg-gray-900 text-white"        >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
         </select>

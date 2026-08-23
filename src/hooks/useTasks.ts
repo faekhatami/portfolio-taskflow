@@ -3,26 +3,49 @@
 import { useEffect, useState } from "react";
 import type { Task } from "@/types/task";
 
+const API_URL = "http://127.0.0.1:8000";
+
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const addTask = (title: string) => {
-    const newTask: Task = {
-      id: Date.now(),
-      title,
-      completed: false,
-    };
+  useEffect(() => {
+    fetch(`${API_URL}/tasks`)
+      .then((response) => response.json())
+      .then((data) => setTasks(data));
+  }, []);
 
-    setTasks([...tasks, newTask]);
+  const addTask = async (title: string) => {
+    await fetch(`${API_URL}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title }),
+    });
+
+    const response = await fetch(`${API_URL}/tasks`);
+    const data = await response.json();
+
+    setTasks(data);
   };
 
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask = async (id: number) => {
+    await fetch(`${API_URL}/tasks/${id}`, {
+      method: "DELETE",
+    });
+
+    setTasks((currentTasks) =>
+      currentTasks.filter((task) => task.id !== id)
+    );
   };
 
-  const toggleTask = (id: number) => {
-    setTasks(
-      tasks.map((task) =>
+  const toggleTask = async (id: number) => {
+    await fetch(`${API_URL}/tasks/${id}`, {
+      method: "PATCH",
+    });
+
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
         task.id === id
           ? { ...task, completed: !task.completed }
           : task
@@ -30,27 +53,21 @@ export function useTasks() {
     );
   };
 
-  const editTask = (id: number, newTitle: string) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id
-          ? { ...task, title: newTitle }
-          : task
+  const editTask = async (id: number, title: string) => {
+    await fetch(`${API_URL}/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title }),
+    });
+
+    setTasks((currentTasks) =>
+      currentTasks.map((task) =>
+        task.id === id ? { ...task, title } : task
       )
     );
   };
-
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
 
   return {
     tasks,
