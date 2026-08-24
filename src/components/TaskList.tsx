@@ -1,4 +1,3 @@
-
 import type { Task } from "@/types/task";
 import TaskItem from "@/components/TaskItem";
 
@@ -19,14 +18,14 @@ export default function TaskList({
 }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-400">
-        <p className="text-lg font-medium">
+      <div className="text-center py-12 text-slate-400">
+        <p className="text-lg font-medium text-slate-300">
           {hasSearch
             ? "No tasks found"
             : "No tasks yet"}
         </p>
-  
-        <p className="text-sm mt-2">
+
+        <p className="text-sm mt-2 text-slate-400">
           {hasSearch
             ? "Try a different search."
             : "Add your first task to get started."}
@@ -49,4 +48,3 @@ export default function TaskList({
     </div>
   );
 }
-

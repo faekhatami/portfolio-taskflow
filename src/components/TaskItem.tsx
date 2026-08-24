@@ -20,34 +20,34 @@ export default function TaskItem({
   const [editTitle, setEditTitle] = useState(task.title);
 
   return (
-    <div className="flex items-center justify-between border rounded-xl p-4 mb-3 bg-white shadow-sm hover:shadow-md transition">
-
+    <div className="flex items-center justify-between border border-slate-700 rounded-xl p-4 mb-3 bg-slate-800 shadow-sm hover:shadow-md transition">
       <div className="flex items-center gap-3">
-
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggleTask(task.id)}
+          className="accent-blue-600"
         />
 
         {isEditing ? (
-  <input
-  value={editTitle}
-  onChange={(event) => setEditTitle(event.target.value)}
-  className="border border-gray-300 bg-white text-gray-900 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-/>
+          <input
+            value={editTitle}
+            onChange={(event) =>
+              setEditTitle(event.target.value)
+            }
+            className="border border-slate-600 bg-slate-700 text-slate-200 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          />
         ) : (
           <p
-          className={
-            task.completed
-              ? "line-through text-gray-400"
-              : "text-gray-900 font-medium"
-          }
-        >
-          {task.title}
-        </p>
+            className={
+              task.completed
+                ? "line-through text-slate-500"
+                : "text-slate-200 font-medium"
+            }
+          >
+            {task.title}
+          </p>
         )}
-
       </div>
 
       <div className="flex gap-3 ml-2">
@@ -56,11 +56,15 @@ export default function TaskItem({
             <button
               onClick={() => {
                 if (editTitle.trim()) {
-                  onEditTask(task.id, editTitle.trim());
+                  onEditTask(
+                    task.id,
+                    editTitle.trim()
+                  );
                   setIsEditing(false);
                 }
               }}
-              className="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition"            >
+              className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition"
+            >
               Save
             </button>
 
@@ -69,38 +73,37 @@ export default function TaskItem({
                 setEditTitle(task.title);
                 setIsEditing(false);
               }}
-              className="bg-gray-400 text-white px-3 py-2 rounded-lg hover:bg-gray-500 transition"            >
+              className="bg-slate-600 text-slate-200 px-3 py-2 rounded-lg hover:bg-slate-500 transition"
+            >
               Cancel
             </button>
           </>
         ) : (
           <>
-           <button
-  onClick={() => setIsEditing(true)}
-  className="bg-blue-500 text-white px-3 py-2 rounded-lg hover:bg-blue-600 transition"
->
-  Edit
-</button>
+            <button
+              onClick={() => setIsEditing(true)}
+              className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Edit
+            </button>
 
             <button
-  onClick={() => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
+              onClick={() => {
+                const confirmed = window.confirm(
+                  "Are you sure you want to delete this task?"
+                );
 
-    if (confirmed) {
-      onDeleteTask(task.id);
-    }
-  }}
-  className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition"
->
-  Delete
-</button>
+                if (confirmed) {
+                  onDeleteTask(task.id);
+                }
+              }}
+              className="bg-red-600 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition"
+            >
+              Delete
+            </button>
           </>
         )}
-
       </div>
-
     </div>
   );
 }
