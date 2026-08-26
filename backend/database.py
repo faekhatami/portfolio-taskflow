@@ -1,7 +1,14 @@
+import os
+from dotenv import load_dotenv
 import psycopg
 
-DATABASE_URL = "postgresql://postgres:TaskFlow123!@localhost:5432/taskflow"
+load_dotenv()
 
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
     return psycopg.connect(DATABASE_URL)
+
+
+ 
+    
