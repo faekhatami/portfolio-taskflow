@@ -1,45 +1,31 @@
-# Portfolio Journey
+# TaskFlow
 
-## Day 1
+A simple full-stack task management app.
 
-### ✅ Completed
+## Features
 
-- Installed development tools
+- Create, edit and delete tasks
+- Mark tasks as completed
+- Search tasks
+- Filter and sort tasks
 
-- Reviewed TypeScript basics
+## Tech Stack
 
-- Created first Next.js project
+- Next.js
+- TypeScript
+- Tailwind CSS
+- FastAPI
+- PostgreSQL
 
----
+## Getting Started
 
-## Day 2
+### Frontend
 
-### ✅ Completed
+npm install
+npm run dev
 
-- Learned React Components
+### Backend
 
-- Learned JSX
+Activate the virtual environment and run:
 
-- Learned Props
-
-- Created project structure
-
-- Built Navbar component
-
-- Built Hero component
-
-- Built Button component
-
-- Styled components with Tailwind CSS
-
-### 📚 Learned
-
-- Component
-
-- JSX
-
-- Props
-
-- import / export
-
-- Tailwind basics
+uvicorn main:app --reload
